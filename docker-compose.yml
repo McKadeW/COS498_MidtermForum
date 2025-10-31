@@ -1,8 +1,8 @@
 services:
   # Node.js Express application
-  backend-nodejs:
-    build: ./backend
-    container_name: backend-nodejs
+  nodejs:
+    build: ./nodejs
+    container_name: nodejs-static
     restart: unless-stopped
     environment:
       - NODE_ENV=production
@@ -19,7 +19,7 @@ services:
     ports:
       - "80:80"  # Only nginx exposes ports to the host
     depends_on:
-      - backend-nodejs
+      - nodejs
     networks:
       - app-network
 

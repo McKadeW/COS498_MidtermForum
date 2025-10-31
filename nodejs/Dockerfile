@@ -12,8 +12,8 @@ RUN npm install
 # Copy source code
 COPY . .
 
-# Remove static file copying - nginx will handle this
-# COPY public/ ./public/  # Remove this line if it exists
+# Static file copying for nginx to proxy traffic to
+#COPY public/ ./public
 
 # Expose port (internal to container network)
 EXPOSE 3010

@@ -1,0 +1,19 @@
+<header>
+	<h1>Wild West Forum</h1>
+	<nav>
+		<a href="/">Home</a>
+		<a href="/comments">Comments</a>
+		<!-- Check to see if they are a user -->
+		<!-- If they are, they get the actions to add comments and logout -->
+		{{#if user}}
+			<a href="/comment/new">Add New Comment</a>
+			<form action="/logout" method="POST">
+				<button type="submit">Logout</button>
+			</form>
+		<!-- Otherwise, they can register or login -->
+		{{else}}
+			<a href="/register">Register</a>
+			<a href="/login">Login</a>
+		{{/if}}
+  	</nav>
+</header>

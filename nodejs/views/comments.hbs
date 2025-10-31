@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>>{{title}}</title>
+	<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+	{{> header}}
+
+	<main>
+		<h2>Comment Page</h2>
+		<p>Users can post comments here!</p>
+		{{#if comments.length}}
+			<ul>
+				{{#each comments}}
+					<li>{{commenter}} - {{commentTime}} <br> {{commentContent}}</li>
+				{{/each}}
+			</ul>
+		{{else}}
+			<p>No Comments, Sorry :(</p>
+		{{/if}}
+	</main>
+
+	{{> footer}}
+</body>
+</html>

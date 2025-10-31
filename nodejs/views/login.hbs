@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>{{title}}<title>
+	<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+	{{> header}}
+
+	<main>
+		<h2>Login</h2>
+		<p>You must login to use the Wild West Forum.</p>
+		{{#if error}}
+			<p>{{error}}</p>
+		{{/if}}
+		<form method="POST" action="/login">
+			<label>Username: </label>
+			<input type="text" name="username" required>
+			<br>
+			<label>Password: </label>
+			<input type="password" name="password" required>
+			<br>
+			<button type="submit">Login</button>
+		</form>
+	</main>
+
+	{{> footer}}
+</body>
+</html>

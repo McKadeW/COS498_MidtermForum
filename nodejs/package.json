@@ -18,6 +18,8 @@
   },
   "homepage": "https://github.com/McKadeW/COS498_MidtermForum#readme",
   "dependencies": {
-    "express": "^5.1.0"
+    "cookie-parser": "^1.4.7",
+    "express": "^5.1.0",
+    "hbs": "^4.2.0"
   }
 }
