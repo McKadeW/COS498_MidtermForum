@@ -11,7 +11,7 @@
 		<h2>Add Comment<h2>
 		<p>The is the form to add a comment to the forum!</p>
 		{{#if error}}
-			<p>{{error}}</p>
+			<p>Didn't fill out all fields?</p>
 		{{/if}}
 		<form method="POST" action="/comment">
 			<textarea name="commentContent" required></textarea>
