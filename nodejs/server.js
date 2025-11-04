@@ -28,7 +28,7 @@ const users = [];
 // Array of objects { author: string, text: string, createdAt: Date }
 const comments = [];
 // An object { user: string, sessionId: string, expires: Date }
-const session = {};
+const currentSession = {};
 
 // Session Middleware
 app.use(session({
@@ -54,7 +54,8 @@ app.get('/', (req, res) => {
 // Registration page
 app.get('/register', (req, res) => {
   res.render('register', {
-    title: 'Register'
+    title: 'Register',
+    error: req.query.error
   });
 });
 
@@ -80,7 +81,8 @@ app.post('/register', (req, res) => {
 // Login page
 app.get('/login', (req, res) => {
   res.render('login', {
-    title: 'Login'
+    title: 'Login',
+    error: req.query.error
   });
 
 });
@@ -90,36 +92,33 @@ app.post('/login', (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
 
-  // Simple authentication (in production, use proper password hashing)
+  // Simple authentication
   if (username && password) {
-	// Set session data
-        req.session.isLoggedIn = true;
-        req.session.username = username;
-        req.session.loginTime = new Date().toISOString();
-        req.session.visitCount = 0;
-        
-        console.log(`User ${username} logged in at ${req.session.loginTime}`);
-        res.redirect('/');
-  } else {
-        res.redirect('/login?error=1');
-  }
+	let userFound = 0;
+	// Verify that the user has an account
+	for (let i = 0; i < users.length; i++){
+        	if (username === users[i].username && password === users[i].password){
+          		userFound = 1;
+			// Set session data
+        		req.session.isLoggedIn = true;
+        		req.session.username = username;
+        		req.session.loginTime = new Date().toISOString();
+        		req.session.visitCount = 0;
+        		console.log(`User ${username} logged in at ${req.session.loginTime}`);
+        		res.redirect('/');
+        	}
+	}
 
-/*
-  let userFound = 0;
-  // Verify that the user has an account
-  for (let i = 0; i < users.length; i++){
-        if (username === users[i].username && password === users[i].password){
-          userFound = 1;
-        }
+	// If the user info isn't found, they don't have 
+	// an account. Redirect back to login page with error.
+	if (!userFound){
+		res.redirect('/login?error=1');	
+	}
   }
-
-  // If the user info isn't found, they don't have 
-  // an account. Redirect back to login page with error.
-  if (!userFound){
-	res.redirect('/login?error=1');	
+  // If the user didn't enter username and password, error
+  else {
+	res.redirect('/login?error=1');
   }
-*/
-
 });
 
 // Logout action
@@ -136,18 +135,37 @@ app.post('/logout', (req, res) => {
 app.get('/comments', (req, res) => {
   // Display the page and all currently posted comments
   res.render('comments', {
-    title: 'Comments'//,
-    //comments: comments
+    title: 'Comments',
+    comments: comments
   });
 });
 
-/*
-app.post('/add_comment', (req, res) => {
-  res.render('add_comment', {
-    title: 'New Comment'
-  });
+// Page to add a new comment to the forum
+app.get('/comment/new', (req, res) => {
+  if (req.session.isLoggedIn) {
+	res.render('add_comment');
+  }
+  // If the user doesn't have an account,
+  // innstead send them to the login page
+  else {
+	res.render('login');
+  }
 });
-*/
+
+// Create the new comment and add it to the memory
+app.post('/comment', (req, res) => {
+  if (!req.session.isLoggedIn) {
+        res.render('login');
+  }
+
+  comments.push({
+	author: req.session.username,
+	text: req.body.text.toString(),
+	createdAt: new Date().toLocaleString()
+  });
+
+  res.redirect('/comments');
+});
 
 // Start server
 app.listen(PORT, '0.0.0.0', () => {
