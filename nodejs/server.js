@@ -27,12 +27,10 @@ app.use(express.static('public'));
 const users = [];
 // Array of objects { author: string, text: string, createdAt: Date }
 const comments = [];
-// An object { user: string, sessionId: string, expires: Date }
-const currentSession = {};
 
 // Session Middleware
 app.use(session({
-  secret: 'not-so-secret-key-change-for-production',
+  secret: 'Wild-West-Forum-Secret',
   resave: false,
   saveUninitialized: false,
   cookie: {
@@ -45,17 +43,27 @@ app.use(session({
 
 // Home page
 app.get('/', (req, res) => {
+  // If the user is logged in display their name,
+  // otherwise display Guest
+  let user = "Guest";
+  if (req.session.isLoggedIn) {
+	user = req.session.username;
+  }
+
+  // Render the hompage with specific data if logged in
   res.render('home', {
-    title: 'Home',
-    message: 'Welcome to the Homepage!'
+	title: 'Home',
+	message: 'Welcome to the Homepage!',
+	loggedIn: req.session.isLoggedIn,
+	user: user
   });
 });
 
 // Registration page
 app.get('/register', (req, res) => {
   res.render('register', {
-    title: 'Register',
-    error: req.query.error
+	title: 'Register',
+	error: req.query.error
   });
 });
 
@@ -81,10 +89,9 @@ app.post('/register', (req, res) => {
 // Login page
 app.get('/login', (req, res) => {
   res.render('login', {
-    title: 'Login',
-    error: req.query.error
+	title: 'Login',
+	error: req.query.error
   });
-
 });
 
 // Login form
@@ -102,9 +109,6 @@ app.post('/login', (req, res) => {
 			// Set session data
         		req.session.isLoggedIn = true;
         		req.session.username = username;
-        		req.session.loginTime = new Date().toISOString();
-        		req.session.visitCount = 0;
-        		console.log(`User ${username} logged in at ${req.session.loginTime}`);
         		res.redirect('/');
         	}
 	}
@@ -123,6 +127,7 @@ app.post('/login', (req, res) => {
 
 // Logout action
 app.post('/logout', (req, res) => {
+  // Destroy the session cookie, go to home page
   req.session.destroy((err) => {
 	if (err) {
             console.log('Error destroying session:', err);
@@ -134,19 +139,29 @@ app.post('/logout', (req, res) => {
 // Comments (main forum page)
 app.get('/comments', (req, res) => {
   // Display the page and all currently posted comments
-  res.render('comments', {
-    title: 'Comments',
-    comments: comments
-  });
+  // Only shows if the user is logged in
+  if (req.session.isLoggedIn) {
+	res.render('comments', {
+    		title: 'Comments',
+    		comments: comments,
+    		loggedIn: req.session.isLoggedIn
+  	});
+  }
+  else {
+	res.render('login');
+  }
 });
 
 // Page to add a new comment to the forum
 app.get('/comment/new', (req, res) => {
+  // The user can only add a comment if logged in
   if (req.session.isLoggedIn) {
-	res.render('add_comment');
+	res.render('add_comment', {
+		error: req.query.error
+	});
   }
   // If the user doesn't have an account,
-  // innstead send them to the login page
+  // instead send them to the login page
   else {
 	res.render('login');
   }
@@ -157,18 +172,28 @@ app.post('/comment', (req, res) => {
   if (!req.session.isLoggedIn) {
         res.render('login');
   }
-
-  comments.push({
-	author: req.session.username,
-	text: req.body.text.toString(),
-	createdAt: new Date().toLocaleString()
-  });
-
-  res.redirect('/comments');
+  
+  // Verfiy that the form was properly filled out/valid
+  const author = req.session.username;
+  const text = req.body.text.toString();
+  
+  // If invalid, redirect to the form
+  if (!author || !text) {
+	res.redirect('/comment/new?error=1');
+  }
+  else {
+	// Add the new comment to memory
+	comments.push({
+		author: req.session.username,
+		text: req.body.text.toString(),
+		createdAt: new Date().toLocaleString()
+	});
+  	res.redirect('/comments');
+  }
 });
 
 // Start server
 app.listen(PORT, '0.0.0.0', () => {
-    console.log(`Server running on port ${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });
 

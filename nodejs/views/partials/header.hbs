@@ -2,10 +2,10 @@
 	<h1>Wild West Forum</h1>
 	<nav>
 		<a href="/">Home</a>
-		<a href="/comments">Comments</a>
 		<!-- Check to see if they are a user -->
-		<!-- If they are, they get the actions to add comments and logout -->
-		{{#if user}}
+		<!-- If they are, they get the actions to view + add comments and logout -->
+		{{#if loggedIn}}
+			<a href="/comments">Comments</a>
 			<a href="/comment/new">Add New Comment</a>
 			<form action="/logout" method="POST">
 				<button type="submit">Logout</button>

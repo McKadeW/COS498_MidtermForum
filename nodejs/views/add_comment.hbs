@@ -11,10 +11,10 @@
 		<h2>Add Comment<h2>
 		<p>The is the form to add a comment to the forum!</p>
 		{{#if error}}
-			<p>Didn't fill out all fields?</p>
+			<p>Invalid Comment Form!</p>
 		{{/if}}
 		<form method="POST" action="/comment">
-			<textarea name="text" required></textarea>
+			<textarea name="text required"></textarea>
 			<br>
 			<button type="submit">Submit</button>
 		</form>
