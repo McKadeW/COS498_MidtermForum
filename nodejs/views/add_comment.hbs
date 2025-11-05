@@ -1,3 +1,4 @@
+<!-- The form for adding a new comment to the forum -->
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,13 +9,17 @@
 	{{> header}}
 
 	<main>
-		<h2>Add Comment<h2>
+		<h2>Add Comment</h2>
 		<p>The is the form to add a comment to the forum!</p>
+		
+		<!-- Throw an error if parts of the comment form are invalid -->
 		{{#if error}}
-			<p>Invalid Comment Form!</p>
+			<p class="error-message">Invalid Comment Form Submission!</p>
 		{{/if}}
-		<form method="POST" action="/comment">
-			<textarea name="text required"></textarea>
+
+		<!-- The new comment form -->
+		<form method="POST" action="/comment" class="form-comment">
+			<textarea name="text" rows="5" cols="40" required placeholder="Write your comment..."></textarea>
 			<br>
 			<button type="submit">Submit</button>
 		</form>

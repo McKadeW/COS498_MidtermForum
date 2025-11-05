@@ -1,0 +1,118 @@
+/* ---------- GENERAL PAGE LAYOUT ---------- */
+
+html, body {
+  height: 100%;                /* Make the full height available */
+  margin: 0;                   /* Remove default spacing */
+  padding: 0;
+  display: flex;               /* Enable flexbox layout */
+  flex-direction: column;      /* Stack header, main, footer vertically */
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f9f7f3;
+  color: #333;
+}
+
+/* ---------- HEADER ---------- */
+
+header {
+  background-color: #deb887;
+  color: #2f1b0c;
+  text-align: center;
+  padding: 1rem;
+}
+
+.navbar a {
+  margin: 0 0.5rem;
+  color: #2f1b0c;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.navbar a:hover {
+  text-decoration: underline;
+}
+
+/* ---------- MAIN CONTENT ---------- */
+
+main.content {
+  flex: 1;                      /* Pushes footer to the bottom */
+  padding: 2rem;
+  max-width: 800px;
+  margin: auto;
+  width: 100%;
+}
+
+/* ---------- FOOTER ---------- */
+
+footer.site-footer {
+  background-color: #deb887;
+  color: #2f1b0c;
+  text-align: center;
+  padding: 1rem;
+  margin-top: auto;             /* Ensures footer stays at the bottom */
+  width: 100%;
+  border-top: 1px solid #b8860b;
+}
+
+/* ---------- COMMENTS ---------- */
+
+ul.comment-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+li.comment-item {
+  background: #fff;
+  border: 1px solid #ccc;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+}
+
+.comment-item .timestamp {
+  font-size: 0.8em;
+  color: #666;
+}
+
+/* ---------- FORMS ---------- */
+
+.form-auth,
+.form-comment {
+  display: flex;
+  flex-direction: column;
+  max-width: 400px;
+  margin: auto;
+}
+
+.form-auth label,
+.form-comment label {
+  margin-top: 0.5rem;
+}
+
+textarea {
+  resize: vertical;
+  padding: 0.5rem;
+  font-family: inherit;
+}
+
+.error-message {
+  color: red;
+  font-weight: bold;
+  text-align: center;
+}
+
+/* ---------- BUTTONS ---------- */
+
+button {
+  background-color: #8b4513;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 1rem;
+}
+
+button:hover {
+  background-color: #a0522d;
+}
+

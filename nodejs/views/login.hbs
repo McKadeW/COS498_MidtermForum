@@ -1,23 +1,28 @@
+<!-- Login page for the wild west forum -->
 <!DOCTYPE html>
 <html>
 <head>
 	<title>{{title}}</title>
-	<link rel="stylesheet" href="/style.css">
+	<link rel="stylesheet" href="/styles.css">
 </head>
 <body>
 	{{> header}}
 
-	<main>
+	<main class="content">
 		<h2>Login</h2>
 		<p>You must login to use the Wild West Forum.</p>
+		
+		<!-- If the user enters the wrong credentials, display an error -->
 		{{#if error}}
-			<p>Wrong credentials!</p>
+			<p class="error-message">Wrong credentials. Please try again!</p>
 		{{/if}}
-		<form method="POST" action="/login">
-			<label>Username: </label>
+
+		<!-- The form for the user to enter username and password for login -->
+		<form method="POST" action="/login" class="form-auth">
+			<label>Username:</label>
 			<input type="text" name="username" required>
 			<br>
-			<label>Password: </label>
+			<label>Password:</label>
 			<input type="password" name="password" required>
 			<br>
 			<button type="submit">Login</button>

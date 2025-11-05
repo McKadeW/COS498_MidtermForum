@@ -1,0 +1,68 @@
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f9f7f3;
+  color: #333;
+  margin: 0;
+  padding: 0;
+}
+
+header, footer {
+  background-color: #deb887;
+  color: #2f1b0c;
+  text-align: center;
+  padding: 1rem;
+}
+
+.navbar a {
+  margin: 0 0.5rem;
+  color: #2f1b0c;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.navbar a:hover {
+  text-decoration: underline;
+}
+
+main.content {
+  padding: 2rem;
+  max-width: 800px;
+  margin: auto;
+}
+
+ul.comment-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+li.comment-item {
+  background: #fff;
+  border: 1px solid #ccc;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+}
+
+.comment-item .timestamp {
+  font-size: 0.8em;
+  color: #666;
+}
+
+.error-message {
+  color: red;
+  font-weight: bold;
+}
+
+button {
+  background-color: #8b4513;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #a0522d;
+}
+

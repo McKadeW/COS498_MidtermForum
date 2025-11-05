@@ -1,3 +1,4 @@
+<!-- The page that will let the user register a new account -->
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,16 +8,21 @@
 <body>
 	{{> header}}
 
-	<main>
+	<main class="content">
 		<h2>Register</h2>
+		<p>Create a new account for the Wild West Forum.</p>
+
+		<!-- If the user tries to register a username that exists, show error -->
 		{{#if error}}
-			<p>You must choose a new username as that one is in use!</p>
+			<p class="error-message">That username is already taken. You must choose another!</p>
 		{{/if}}
-		<form method="POST" action="/register">
-			<label>Username: </label>
+
+		<!-- The form allowing the user to create their username and password -->
+		<form method="POST" action="/register" class="form-auth">
+			<label>Username:</label>
 			<input type="text" name="username" required>
-			</br>
-			<label>Password: </label>
+			<br>
+			<label>Password:</label>
                         <input type="password" name="password" required>
 			<br>
 			<button type="submit">Register</button>
