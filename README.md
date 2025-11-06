@@ -38,8 +38,7 @@ Return to the root directory and use Docker Compose to build and start both cont
 
 - **Step 3 - View the Results**
 
-Once the containers are running, open your browser and navigate to:
-- http://localhost:3000
+Once the containers are running, open your browser and navigate to the IP address of the VM/Host running the application.
 
 - **Final Step - Stopping the Containers**
 

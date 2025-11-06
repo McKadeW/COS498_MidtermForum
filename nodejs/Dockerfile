@@ -16,7 +16,7 @@ COPY . .
 #COPY public/ ./public
 
 # Expose port (internal to container network)
-EXPOSE 3010
+EXPOSE 3012
 
 # Start the application
 CMD ["node", "server.js"]
