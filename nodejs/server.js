@@ -4,7 +4,7 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const app = express();
-const PORT = 3010;
+const PORT = process.env.PORT || 3010;
 
 // Configure Handlebars
 app.set('view engine', 'hbs');
@@ -46,12 +46,12 @@ app.get('/', (req, res) => {
   // If the user is logged in display their name,
   // otherwise display Guest
   let user = "Guest";
-  if (req.session.isLoggedIn) {
+  if (req.session && req.session.isLoggedIn) {
 	user = req.session.username;
   }
 
   // Render the hompage with specific data if logged in
-  res.render('home', {
+  return res.render('home', {
 	title: 'Home',
 	message: 'Welcome to the Homepage!',
 	loggedIn: req.session.isLoggedIn,
@@ -61,7 +61,7 @@ app.get('/', (req, res) => {
 
 // Registration page
 app.get('/register', (req, res) => {
-  res.render('register', {
+  return res.render('register', {
 	title: 'Register',
 	error: req.query.error
   });
@@ -75,20 +75,20 @@ app.post('/register', (req, res) => {
   // Verify a unique username
   for (let i = 0; i < users.length; i++){
 	if (username === users[i].username){
-	  res.redirect('/register?error=1');
+	  return res.redirect('/register?error=1');
 	}
   }
 
   // If not taken add the user info to the DB
   // and redirect to the login page
   users.push({username, password});
-  res.redirect('/login');
+  return res.redirect('/login');
   
 });
 
 // Login page
 app.get('/login', (req, res) => {
-  res.render('login', {
+  return res.render('login', {
 	title: 'Login',
 	error: req.query.error
   });
@@ -109,19 +109,19 @@ app.post('/login', (req, res) => {
 			// Set session data
         		req.session.isLoggedIn = true;
         		req.session.username = username;
-        		res.redirect('/');
+        		return res.redirect('/');
         	}
 	}
 
 	// If the user info isn't found, they don't have 
 	// an account. Redirect back to login page with error.
 	if (!userFound){
-		res.redirect('/login?error=1');	
+		return res.redirect('/login?error=1');	
 	}
   }
   // If the user didn't enter username and password, error
   else {
-	res.redirect('/login?error=1');
+	return res.redirect('/login?error=1');
   }
 });
 
@@ -132,7 +132,7 @@ app.post('/logout', (req, res) => {
 	if (err) {
             console.log('Error destroying session:', err);
         }
-        res.redirect('/');
+        return res.redirect('/');
   });
 });
 
@@ -140,37 +140,39 @@ app.post('/logout', (req, res) => {
 app.get('/comments', (req, res) => {
   // Display the page and all currently posted comments
   // Only shows if the user is logged in
-  if (req.session.isLoggedIn) {
-	res.render('comments', {
+  if (req.session && req.session.isLoggedIn) {
+	return res.render('comments', {
     		title: 'Comments',
     		comments: comments,
     		loggedIn: req.session.isLoggedIn
   	});
   }
   else {
-	res.render('login');
+	return res.render('login');
   }
 });
 
 // Page to add a new comment to the forum
 app.get('/comment/new', (req, res) => {
   // The user can only add a comment if logged in
-  if (req.session.isLoggedIn) {
-	res.render('add_comment', {
+  if (req.session && req.session.isLoggedIn) {
+	return res.render('add_comment', {
+		loggedIn: req.session.isLoggedIn,
+        	user: req.session.username,
 		error: req.query.error
 	});
   }
   // If the user doesn't have an account,
   // instead send them to the login page
   else {
-	res.render('login');
+	return res.render('login');
   }
 });
 
 // Create the new comment and add it to the memory
 app.post('/comment', (req, res) => {
-  if (!req.session.isLoggedIn) {
-        res.render('login');
+  if (!req.session || !req.session.isLoggedIn) {
+        return res.render('login');
   }
   
   // Verfiy that the form was properly filled out/valid
@@ -179,7 +181,7 @@ app.post('/comment', (req, res) => {
   
   // If invalid, redirect to the form
   if (!author || !text) {
-	res.redirect('/comment/new?error=1');
+	return res.redirect('/comment/new?error=1');
   }
   else {
 	// Add the new comment to memory
@@ -188,7 +190,7 @@ app.post('/comment', (req, res) => {
 		text: req.body.text.toString(),
 		createdAt: new Date().toLocaleString()
 	});
-  	res.redirect('/comments');
+  	return res.redirect('/comments');
   }
 });
 

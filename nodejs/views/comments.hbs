@@ -10,11 +10,11 @@
 
 	<!-- Main section that will display the list of posted comments (if any) -->
 	<main class="content">
-		<h2>Comment Page</h2>
-		<p>Users can post comments here!</p>
+		<h2>Posted Comments</h2>
 
 		<!-- If there are comments, display them -->
 		{{#if comments.length}}
+			<br><br>
 			<ul class="comment-list">
 				{{#each comments}}
 					<li class="comment-item">
@@ -25,6 +25,7 @@
 				{{/each}}
 			</ul>
 		{{else}}
+			<br>
 			<p>No Comments Yet! Be the first to make a post!</p>
 		{{/if}}
 	</main>
